@@ -1,0 +1,100 @@
+package com.spring.ex02;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.multiaction.MultiActionController;
+
+public class UserController extends MultiActionController {
+	
+	public ModelAndView login(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String userID = "";
+		String passwd = "";
+		String viewName = getViewName(request);
+		ModelAndView mav = new ModelAndView();
+		request.setCharacterEncoding("utf-8");
+		userID = request.getParameter("userID");
+		passwd = request.getParameter("passwd");
+		
+
+		mav.addObject("userID", userID);
+		mav.addObject("passwd", passwd);
+	//	mav.setViewName("result");
+		mav.setViewName(viewName);
+	//	System.out.println("ViewName: " + viewName);
+		
+		return mav;
+	}
+	
+	
+	public ModelAndView memberInfo(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		request.setCharacterEncoding("utf-8");
+	    ModelAndView mav=new ModelAndView();
+	    String id=request.getParameter("id");
+	    String pwd=request.getParameter("pwd");
+	    String name=request.getParameter("name");
+	    String email=request.getParameter("email");
+
+	    mav.addObject("id",id);
+	    mav.addObject("pwd",pwd);
+	    mav.addObject("name",name);
+	    mav.addObject("email",email);
+	    mav.setViewName("memberInfo");
+	    return mav;
+	}
+	
+	
+	// 앞쪽의 경로와 .do를 삭제해주는 함수
+	private  String getViewName(HttpServletRequest request) throws Exception {
+	      String contextPath = request.getContextPath();
+	 //     System.out.println("contextPath : " + contextPath); // 디버깅
+	      
+	      String uri = (String)request.getAttribute("javax.servlet.include.request_uri");
+	 //     System.out.println("uri : " + uri); // 디버깅
+	      
+	      if(uri == null || uri.trim().equals("")) {
+	         uri = request.getRequestURI();
+	      }
+
+	      int begin = 0;
+	      if(!((contextPath==null)||("".equals(contextPath)))){
+	         begin = contextPath.length();
+	 //        System.out.println("begin : " + begin); // 디버깅
+	      }
+
+	      int end;
+	      if(uri.indexOf(";")!=-1){  // indexOf - 위치를 찾는 함수
+	         end=uri.indexOf(";");
+	      }else if(uri.indexOf("?")!=-1){
+	         end=uri.indexOf("?");
+	      }else{
+	         end=uri.length();
+	      }
+	 //     System.out.println("end : " + end); // 디버깅
+
+	      
+	      String fileName=uri.substring(begin,end);
+	      if(fileName.indexOf(".")!=-1){
+	         fileName=fileName.substring(0,fileName.lastIndexOf("."));
+	      }
+	      if(fileName.lastIndexOf("/")!=-1){
+	         fileName=fileName.substring(fileName.lastIndexOf("/"),fileName.length());
+	      }
+	  //    System.out.println("fileName : " + fileName); // 디버깅
+	      return fileName;
+	   }
+	
+	
+	
+	public ModelAndView loginForm (HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String viewName = getViewName(request);
+		return new ModelAndView(viewName);   // ModelAndView > jsp를 보여달라는 뜻
+	}
+	
+	public ModelAndView memberForm (HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String viewName = getViewName(request);
+		return new ModelAndView(viewName);   
+	}
+	
+}
