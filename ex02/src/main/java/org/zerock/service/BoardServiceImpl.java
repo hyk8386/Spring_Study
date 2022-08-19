@@ -1,171 +1,60 @@
 package org.zerock.service;
 
-import org.apache.catalina.Engine;
-import org.apache.catalina.Executor;
-import org.apache.catalina.LifecycleException;
-import org.apache.catalina.LifecycleListener;
-import org.apache.catalina.LifecycleState;
-import org.apache.catalina.Server;
-import org.apache.catalina.Service;
-import org.apache.catalina.connector.Connector;
-import org.apache.catalina.mapper.Mapper;
+import java.util.List;
 
-public class BoardServiceImpl implements Service{
+import org.springframework.stereotype.Service;
+import org.zerock.domain.BoardVO;
+import org.zerock.mapper.BoardMapper;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
+
+@Log4j
+@Service
+@AllArgsConstructor
+public class BoardServiceImpl implements BoardService{
+	
+	private BoardMapper mapper;
 
 	@Override
-	public void addLifecycleListener(LifecycleListener listener) {
-		// TODO Auto-generated method stub
+	public void register(BoardVO board) {
+		
+		log.info("register.........." + board);
+		
+		mapper.insertSelectKey(board);
 		
 	}
 
 	@Override
-	public void destroy() throws LifecycleException {
-		// TODO Auto-generated method stub
+	public BoardVO get(Long bno) {
 		
-	}
-
-	@Override
-	public LifecycleListener[] findLifecycleListeners() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public LifecycleState getState() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getStateName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void init() throws LifecycleException {
-		// TODO Auto-generated method stub
+		log.info("get....." + bno);
 		
+		return mapper.read(bno);
 	}
 
 	@Override
-	public void removeLifecycleListener(LifecycleListener listener) {
-		// TODO Auto-generated method stub
+	public boolean modify(BoardVO board) {
 		
-	}
-
-	@Override
-	public void start() throws LifecycleException {
-		// TODO Auto-generated method stub
+		log.info("modify....." + board);
 		
+		return mapper.update(board) == 1;
 	}
 
 	@Override
-	public void stop() throws LifecycleException {
-		// TODO Auto-generated method stub
+	public boolean remove(Long bno) {
 		
-	}
-
-	@Override
-	public void addConnector(Connector connector) {
-		// TODO Auto-generated method stub
+		log.info("remove......" + bno);
 		
+		return mapper.delete(bno) == 1;
 	}
 
+	// 목록(리스트)
 	@Override
-	public void addExecutor(Executor ex) {
-		// TODO Auto-generated method stub
+	public List<BoardVO> getList() {
 		
-	}
-
-	@Override
-	public Connector[] findConnectors() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Executor[] findExecutors() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Engine getContainer() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getDomain() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Executor getExecutor(String name) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Mapper getMapper() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ClassLoader getParentClassLoader() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Server getServer() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void removeConnector(Connector connector) {
-		// TODO Auto-generated method stub
+		log.info("getList.........");
 		
+		return mapper.getList();
 	}
-
-	@Override
-	public void removeExecutor(Executor ex) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setContainer(Engine engine) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setName(String name) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setParentClassLoader(ClassLoader parent) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setServer(Server server) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }
